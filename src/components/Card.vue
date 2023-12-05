@@ -1,44 +1,34 @@
 <script setup>
+import { ref } from 'vue';
+
 defineProps({
-  id: Number,
   title: String,
-  imageUrl: String,
+  img: String,
   price: Number,
-  isFavorite: Boolean,
-  isAdded: Boolean,
-  onClickFavorite: Function,
-  onClickAdd: Function
-})
+});
+
+const isLiked = ref(false);
+
+const onClick = () => {
+  isLiked.value = !isLiked.value;
+};
 </script>
 
 <template>
   <div
-    class="relative bg-white border border-slate-100 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover:shadow-xl"
+    class="relative flex flex-col w-full border border-slate-100 rounded-xl p-8 cursor-pointer transition hover:shadow-xl hover:transform hover:-translate-y-2"
   >
-    <img
-      v-if="onClickFavorite"
-      :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'"
-      alt="Like 1"
-      class="absolute top-8 left-8"
-      @click="onClickFavorite"
-    />
-
-    <img :src="imageUrl" alt="Sneaker" />
-
-    <p class="mt-2">{{ title }}</p>
-
+    <div @click="onClick" class="absolute top-8 left-8">
+      <img :src="isLiked ? '/like-1.svg' : '/like-2.svg'" alt="Favorite" />
+    </div>
+    <img :src="img" class="w-full" alt="Sneaker" />
+    <p>{{ title }}</p>
     <div class="flex justify-between mt-5">
-      <div class="flex flex-col">
-        <span class="text-slate-400">Цена:</span>
-        <b>{{ price }} руб.</b>
+      <div class="flex flex-col gap-2">
+        <span class="text-slate-200">Цена:</span>
+        <span class="font-bold">{{ price }} руб.</span>
       </div>
-
-      <img
-        v-if="onClickAdd"
-        @click="onClickAdd"
-        :src="!isAdded ? '/plus.svg' : '/checked.svg'"
-        alt="Plus"
-      />
+      <img src="/plus.svg" alt="Plus" />
     </div>
   </div>
 </template>
